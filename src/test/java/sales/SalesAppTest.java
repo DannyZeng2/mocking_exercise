@@ -2,22 +2,28 @@ package sales;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SalesAppTest {
 
-	@Test
-	public void testGenerateReport() {
+	@Mock
+	SalesDao salesDao;
+	@Mock
+	SalesReportDao salesReportDao;
+	@InjectMocks
+	SalesApp salesApp = new SalesApp();
 
-		SalesApp salesApp = new SalesApp();
-		salesApp.generateSalesActivityReport("DUMMY", 1000, false, false);
-
-	}
 
 	@Test
 	public void should_is_not_sale_return_false_when_today_is_sale_day(){
@@ -52,5 +58,21 @@ public class SalesAppTest {
 		List<String> headers = spySalesApp.getHeaders(isNatTrade);
 		//then
 		Assert.assertEquals(true,headers.contains("Local Time"));
+	}
+
+	@Test
+	public void should_return_filteredReportDataList_when_add_filteredReportDataList(){
+		//given
+		Sales spySales = spy(new Sales());
+		SalesReportData spySalesReportData = spy(new SalesReportData());
+		when(spySalesReportData.getType()).thenReturn("SalesActivity");
+		List<SalesReportData> reportDataList = Arrays.asList(new SalesReportData(),spySalesReportData);
+		when(salesReportDao.getReportData(spySales)).thenReturn(reportDataList);
+		List<SalesReportData> filteredReportDataList = new ArrayList<>();
+		//when
+		filteredReportDataList = salesApp.addFilteredReportDataList(true,filteredReportDataList,reportDataList);
+		//then
+		Assert.assertEquals(1, filteredReportDataList.size());
+		Assert.assertEquals("SalesActivity", filteredReportDataList.get(0).getType());
 	}
 }
