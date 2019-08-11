@@ -21,11 +21,7 @@ public class SalesApp {
 
 		Sales sales = salesDao.getSalesBySalesId(salesId);
 
-		Date today = new Date();
-		if (today.after(sales.getEffectiveTo())
-				|| today.before(sales.getEffectiveFrom())){
-			return;
-		}
+		if (isNotSaleDay(sales)) return;
 
 		List<SalesReportData> reportDataList = salesReportDao.getReportData(sales);
 
@@ -52,6 +48,15 @@ public class SalesApp {
 		ecmService.uploadDocument(report.toXml());
 
 	}
+	protected boolean isNotSaleDay(Sales sales) {
+		Date today = new Date();
+		if (today.after(sales.getEffectiveTo())
+				|| today.before(sales.getEffectiveFrom())){
+			return true;
+		}
+		return false;
+	}
+
 
 	protected List<String> getHeaders(boolean isNatTrade) {
 		List<String> headers;
@@ -70,6 +75,7 @@ public class SalesApp {
 		}
 		return tempList;
 	}
+
 
 
 	private SalesActivityReport generateReport(List<String> headers, List<SalesReportData> reportDataList) {
