@@ -25,17 +25,7 @@ public class SalesApp {
 
 		List<SalesReportData> reportDataList = salesReportDao.getReportData(sales);
 
-		for (SalesReportData data : reportDataList) {
-			if ("SalesActivity".equalsIgnoreCase(data.getType())) {
-				if (data.isConfidential()) {
-					if (isSupervisor) {
-						filteredReportDataList.add(data);
-					}
-				}else {
-					filteredReportDataList.add(data);
-				}
-			}
-		}
+		filteredReportDataList = addFilteredReportDataList(isSupervisor, filteredReportDataList, reportDataList);
 
 		List<SalesReportData> tempList = getTempList(maxRow, reportDataList);
 		filteredReportDataList = tempList;
@@ -55,6 +45,21 @@ public class SalesApp {
 			return true;
 		}
 		return false;
+	}
+
+	protected List<SalesReportData> addFilteredReportDataList(boolean isSupervisor, List<SalesReportData> filteredReportDataList, List<SalesReportData> reportDataList) {
+		for (SalesReportData data : reportDataList) {
+			if ("SalesActivity".equalsIgnoreCase(data.getType())) {
+				if (data.isConfidential()) {
+					if (isSupervisor) {
+						filteredReportDataList.add(data);
+					}
+				}else {
+					filteredReportDataList.add(data);
+				}
+			}
+		}
+		return filteredReportDataList;
 	}
 
 
