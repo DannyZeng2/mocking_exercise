@@ -8,12 +8,12 @@ public class Sales {
 
 	public Date getEffectiveTo() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Date(new Date().getTime() + 100000);
 	}
 
 	public Date getEffectiveFrom() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Date(new Date().getTime() - 100000);
 	}
 
 	public boolean isSupervisor() {
