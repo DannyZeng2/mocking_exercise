@@ -43,4 +43,14 @@ public class SalesAppTest {
 		Assert.assertEquals(false,headers.contains("Local Time"));
 	}
 
+	@Test
+	public void should_return_local_time_is_contains_when_isNatTrade_is_false(){
+		//given
+		boolean isNatTrade=false;
+		SalesApp spySalesApp = spy(new SalesApp());
+		//when
+		List<String> headers = spySalesApp.getHeaders(isNatTrade);
+		//then
+		Assert.assertEquals(true,headers.contains("Local Time"));
+	}
 }
