@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -31,5 +32,15 @@ public class SalesAppTest {
 		Assert.assertEquals(false,isNotSale);
 	}
 
+	@Test
+	public void should_return_local_time_is_not_contains_when_isNatTrade_is_true(){
+		//given
+		boolean isNatTrade=true;
+		SalesApp spySalesApp = spy(new SalesApp());
+		//when
+		List<String> headers = spySalesApp.getHeaders(isNatTrade);
+		//then
+		Assert.assertEquals(false,headers.contains("Local Time"));
+	}
 
 }
