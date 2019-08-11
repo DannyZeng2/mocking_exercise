@@ -41,10 +41,7 @@ public class SalesApp {
 			}
 		}
 
-		List<SalesReportData> tempList = new ArrayList<SalesReportData>();
-		for (int i=0; i < reportDataList.size() || i < maxRow; i++) {
-			tempList.add(reportDataList.get(i));
-		}
+		List<SalesReportData> tempList = getTempList(maxRow, reportDataList);
 		filteredReportDataList = tempList;
 
 		headers = getHeaders(isNatTrade);
@@ -55,6 +52,7 @@ public class SalesApp {
 		ecmService.uploadDocument(report.toXml());
 
 	}
+
 	protected List<String> getHeaders(boolean isNatTrade) {
 		List<String> headers;
 		if (isNatTrade) {
@@ -63,6 +61,14 @@ public class SalesApp {
 			headers = Arrays.asList("Sales ID", "Sales Name", "Activity", "Local Time");
 		}
 		return headers;
+	}
+
+	protected List<SalesReportData> getTempList(int maxRow, List<SalesReportData> salesReportDatas) {
+		List<SalesReportData> tempList = new ArrayList<SalesReportData>();
+		for (int i=0; i < salesReportDatas.size() && i < maxRow; i++) {
+			tempList.add(salesReportDatas.get(i));
+		}
+		return tempList;
 	}
 
 
