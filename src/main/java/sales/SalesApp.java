@@ -47,11 +47,7 @@ public class SalesApp {
 		}
 		filteredReportDataList = tempList;
 
-		if (isNatTrade) {
-			headers = Arrays.asList("Sales ID", "Sales Name", "Activity", "Time");
-		} else {
-			headers = Arrays.asList("Sales ID", "Sales Name", "Activity", "Local Time");
-		}
+		headers = getHeaders(isNatTrade);
 
 		SalesActivityReport report = this.generateReport(headers, reportDataList);
 
@@ -59,6 +55,16 @@ public class SalesApp {
 		ecmService.uploadDocument(report.toXml());
 
 	}
+	protected List<String> getHeaders(boolean isNatTrade) {
+		List<String> headers;
+		if (isNatTrade) {
+			headers = Arrays.asList("Sales ID", "Sales Name", "Activity", "Time");
+		} else {
+			headers = Arrays.asList("Sales ID", "Sales Name", "Activity", "Local Time");
+		}
+		return headers;
+	}
+
 
 	private SalesActivityReport generateReport(List<String> headers, List<SalesReportData> reportDataList) {
 		// TODO Auto-generated method stub
